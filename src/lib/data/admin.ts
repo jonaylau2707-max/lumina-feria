@@ -1,7 +1,7 @@
 import { demoOrders, demoProducts } from "@/lib/data/demo";
 import { hasSupabaseEnv } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/server";
-import type { Order, Product } from "@/types";
+import type { Brand, Category, Order, Product } from "@/types";
 
 type OrderRow = Omit<Order, "total" | "order_items"> & {
   total: number | string;
@@ -70,4 +70,18 @@ export async function getAdminProducts(): Promise<Product[]> {
     fair_price:
       product.fair_price === null ? null : Number(product.fair_price),
   }));
+}
+
+export async function getAdminCollections(): Promise<{ brands: Brand[]; categories: Category[] }> {
+  if (!hasSupabaseEnv()) {
+    const { demoBrands, demoCategories } = await import("@/lib/data/demo");
+    return { brands: demoBrands, categories: demoCategories };
+  }
+  const supabase = await createClient();
+  const [brandsResult, categoriesResult] = await Promise.all([
+    supabase.from("brands").select("*").order("name"),
+    supabase.from("categories").select("*").order("name"),
+  ]);
+  if (brandsResult.error || categoriesResult.error) throw new Error("No pudimos cargar marcas y categorías.");
+  return { brands: brandsResult.data as Brand[], categories: categoriesResult.data as Category[] };
 }
