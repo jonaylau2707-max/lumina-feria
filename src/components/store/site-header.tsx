@@ -8,7 +8,7 @@ import { Logo } from "@/components/shared/logo";
 import { CartDrawer } from "@/components/store/cart-drawer";
 import { useCart } from "@/components/store/cart-provider";
 
-const links = [{ href: "/", label: "Inicio" }, { href: "/products", label: "Productos" }, { href: "/products#categories", label: "Categorías" }];
+const links = [{ href: "/", label: "Inicio" }, { href: "/products", label: "Productos" }, { href: "/#categories", label: "Categorías" }];
 
 export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);

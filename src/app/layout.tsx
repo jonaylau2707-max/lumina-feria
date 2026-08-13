@@ -14,7 +14,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: { default: "Lúmina Feria — Hallazgos que iluminan", template: "%s | Lúmina Feria" },
   description: "Perfumería, bienestar, hogar y accesorios seleccionados a precios especiales de feria.",
-  openGraph: { title: "Lúmina Feria", description: "Una selección bonita, cercana y cambiante para disfrutar y regalar.", type: "website", locale: "es_CO" },
+  openGraph: { title: "Lúmina Feria", description: "Una selección bonita, cercana y cambiante para disfrutar y regalar.", type: "website", locale: "es_CO", images: [{ url: `${siteUrl}/og.png`, width: 1792, height: 909, alt: "Lúmina Feria — Hallazgos que iluminan lo cotidiano" }] },
+  twitter: { card: "summary_large_image", title: "Lúmina Feria", description: "Hallazgos que iluminan lo cotidiano.", images: [`${siteUrl}/og.png`] },
   robots: { index: true, follow: true },
 };
 
