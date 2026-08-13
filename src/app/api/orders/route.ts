@@ -1,6 +1,6 @@
 import { checkoutSchema } from "@/lib/validations/order";
 import { hasSupabaseEnv } from "@/lib/supabase/config";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/server";
 
 const requests = new Map<string, number[]>();
 const limitWindow = 10 * 60 * 1000;
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 
   try {
     const input = checkoutSchema.parse(await request.json());
-    const supabase = await createClient();
+    const supabase = createPublicClient();
     const { data, error } = await supabase.rpc("create_order", {
       customer_first_name: input.firstName,
       customer_last_name: input.lastName,

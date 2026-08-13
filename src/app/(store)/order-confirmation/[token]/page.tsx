@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { OrderStatusBadge } from "@/components/shared/order-status-badge";
 import { ProductImage } from "@/components/store/product-image";
 import { hasSupabaseEnv } from "@/lib/supabase/config";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/server";
 import { formatMoney } from "@/lib/utils/pricing";
 import type { Order } from "@/types";
 
@@ -14,7 +14,7 @@ export const metadata: Metadata = { title: "Pedido recibido", robots: { index: f
 
 async function getConfirmation(token: string): Promise<Order | null> {
   if (!hasSupabaseEnv()) return null;
-  const supabase = await createClient();
+  const supabase = createPublicClient();
   const { data, error } = await supabase.rpc("get_order_confirmation", { token });
   if (error || !data) { if (error) console.error("No fue posible cargar la confirmación", error); return null; }
   const row = data as unknown as Order;

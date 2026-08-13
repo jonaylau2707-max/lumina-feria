@@ -137,7 +137,7 @@ Obtén URL y clave pública en **Supabase → Project Settings → API**. Este p
 ### Opción B: SQL Editor
 
 1. Abre **Supabase → SQL Editor**.
-2. Ejecuta completo `supabase/migrations/202608130001_initial_schema.sql`.
+2. Ejecuta, en orden, los archivos de `supabase/migrations/`.
 3. Ejecuta `supabase/seed.sql`.
 
 La migración configura tablas, constraints, índices, RLS, funciones y el bucket `product-images`. No crees políticas públicas adicionales para `orders` u `order_items`: las confirmaciones se consultan únicamente por la función y su token.
@@ -159,7 +159,7 @@ Una cuenta de Auth sin registro en `admin_profiles` no puede acceder ni ejecutar
 
 ## Imágenes y Storage
 
-El formulario acepta JPG, PNG, WebP y AVIF de hasta 5 MB. Los archivos se guardan con nombres UUID dentro del bucket `product-images`. RLS permite lectura pública y restringe altas, cambios y borrados a administradores. Al reemplazar o eliminar físicamente un producto, el servidor intenta retirar la imagen anterior de forma segura.
+El formulario acepta JPG, PNG, WebP y AVIF de hasta 5 MB. Los archivos se guardan con nombres UUID dentro del bucket público `product-images`: las URL conocidas son públicas, pero no se permite listar sus objetos de forma anónima. RLS restringe altas, cambios y borrados a administradores. Al reemplazar o eliminar físicamente un producto, el servidor intenta retirar la imagen anterior de forma segura.
 
 ## Seguridad e integridad
 

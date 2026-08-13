@@ -105,6 +105,8 @@ create trigger products_updated_at before update on public.products for each row
 create trigger orders_updated_at before update on public.orders for each row execute function public.set_updated_at();
 create trigger admin_profiles_updated_at before update on public.admin_profiles for each row execute function public.set_updated_at();
 
+revoke all on function public.set_updated_at() from public;
+
 create or replace function public.is_admin()
 returns boolean language sql stable security definer set search_path = '' as $$
   select exists(select 1 from public.admin_profiles where id = (select auth.uid()));
@@ -119,6 +121,17 @@ alter table public.categories enable row level security;
 alter table public.products enable row level security;
 alter table public.orders enable row level security;
 alter table public.order_items enable row level security;
+
+-- RLS only filters rows after the Data API role has table privileges.
+-- Keep the public role read-only and grant administrators only the operations
+-- implemented by the protected dashboard.
+revoke all on public.admin_profiles, public.brands, public.categories,
+  public.products, public.orders, public.order_items from anon, authenticated;
+grant select on public.brands, public.categories, public.products to anon;
+grant select, insert, update, delete on public.brands, public.categories,
+  public.products to authenticated;
+grant select on public.admin_profiles, public.order_items to authenticated;
+grant select, update on public.orders to authenticated;
 
 create policy "Public reads active brands" on public.brands for select to anon, authenticated using (active or public.is_admin());
 create policy "Public reads active categories" on public.categories for select to anon, authenticated using (active or public.is_admin());
