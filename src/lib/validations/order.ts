@@ -28,9 +28,7 @@ export const checkoutSchema = z.object({
   notes: z
     .string()
     .trim()
-    .max(500, "Las observaciones no pueden superar 500 caracteres.")
-    .optional()
-    .default(""),
+    .max(500, "Las observaciones no pueden superar 500 caracteres."),
   items: z
     .array(orderItemInputSchema)
     .min(1, "Tu carrito está vacío.")
