@@ -5,7 +5,7 @@ import { normalizeColombianPhone } from "@/lib/utils/phone";
 import { calculateCartTotal, calculateSubtotal, formatMoney, getProductSavings, getProductSellingPrice } from "@/lib/utils/pricing";
 import { toSlug } from "@/lib/utils/slug";
 import { orderStatusSchema, productSchema } from "@/lib/validations/admin";
-import { checkoutSchema } from "@/lib/validations/order";
+import { checkoutContactSchema, checkoutSchema } from "@/lib/validations/order";
 
 describe("lógica de precios", () => {
   it("elige el precio fijo correcto", () => expect(getProductSellingPrice(demoProducts[1])).toBe(42900));
@@ -16,6 +16,7 @@ describe("lógica de precios", () => {
 });
 
 describe("validaciones", () => {
+  it("valida los datos de contacto sin exigir un campo oculto del carrito", () => { expect(checkoutContactSchema.safeParse({ firstName: "Ana", lastName: "Ríos", phone: "3001234567", notes: "" }).success).toBe(true); });
   it("acepta una solicitud válida y rechaza un carrito vacío", () => { const base = { firstName: "Ana", lastName: "Ríos", phone: "3001234567", notes: "", items: [{ productId: demoProducts[0].id, quantity: 1 }] }; expect(checkoutSchema.safeParse(base).success).toBe(true); expect(checkoutSchema.safeParse({ ...base, items: [] }).success).toBe(false); });
   it("solo acepta los tres estados definidos", () => { expect(orderStatusSchema.safeParse({ status: "NEW" }).success).toBe(true); expect(orderStatusSchema.safeParse({ status: "SHIPPED" }).success).toBe(false); });
   it("exige que el precio feria sea menor al de catálogo", () => { const product = { name: "Producto válido", slug: "producto-valido", description: "Una descripción suficientemente larga.", image_url: null, brand_id: demoProducts[0].brand_id, category_id: demoProducts[0].category_id, pricing_type: "FAIR", regular_price: null, catalog_price: 50000, fair_price: 60000, featured: false, active: true }; expect(productSchema.safeParse(product).success).toBe(false); });

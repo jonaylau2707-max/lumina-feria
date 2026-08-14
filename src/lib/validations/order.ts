@@ -35,4 +35,7 @@ export const checkoutSchema = z.object({
     .max(50, "El pedido contiene demasiados productos."),
 });
 
+export const checkoutContactSchema = checkoutSchema.omit({ items: true });
+
 export type CheckoutInput = z.infer<typeof checkoutSchema>;
+export type CheckoutContactInput = z.infer<typeof checkoutContactSchema>;

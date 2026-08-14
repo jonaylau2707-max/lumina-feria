@@ -11,14 +11,19 @@ import { useCart } from "@/components/store/cart-provider";
 import { ProductImage } from "@/components/store/product-image";
 import { QuantitySelector } from "@/components/store/quantity-selector";
 import { formatMoney, getProductSellingPrice } from "@/lib/utils/pricing";
-import { checkoutSchema, type CheckoutInput } from "@/lib/validations/order";
+import {
+  checkoutContactSchema,
+  checkoutSchema,
+  type CheckoutContactInput,
+} from "@/lib/validations/order";
 
 export function CheckoutCart({ isDemo }: { isDemo: boolean }) {
   const router = useRouter(); const { items, total, hydrated, updateQuantity, removeItem, clearCart } = useCart();
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<CheckoutInput>({ resolver: zodResolver(checkoutSchema), defaultValues: { firstName: "", lastName: "", phone: "", notes: "", items: [] } });
-  const submit = async (data: CheckoutInput) => {
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<CheckoutContactInput>({ resolver: zodResolver(checkoutContactSchema), defaultValues: { firstName: "", lastName: "", phone: "", notes: "" } });
+  const submit = async (data: CheckoutContactInput) => {
     try {
-      const response = await fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...data, items: items.map((item) => ({ productId: item.product.id, quantity: item.quantity })) }) });
+      const payload = checkoutSchema.parse({ ...data, items: items.map((item) => ({ productId: item.product.id, quantity: item.quantity })) });
+      const response = await fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
       const result = await response.json() as { token?: string; message?: string };
       if (!response.ok || !result.token) throw new Error(result.message ?? "No fue posible enviar tu pedido.");
       clearCart(); router.push(`/order-confirmation/${result.token}`);
