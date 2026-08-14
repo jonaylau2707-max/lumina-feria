@@ -2,7 +2,7 @@ import { cache } from "react";
 
 import { demoBrands, demoCategories, demoProducts } from "@/lib/data/demo";
 import { hasSupabaseEnv } from "@/lib/supabase/config";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/server";
 import type { Brand, Category, Product, StoreData } from "@/types";
 
 type ProductRow = Omit<Product, "brand" | "category"> & {
@@ -33,7 +33,7 @@ export const getStoreData = cache(async (): Promise<StoreData> => {
     };
   }
 
-  const supabase = await createClient();
+  const supabase = createPublicClient();
   const [productsResult, brandsResult, categoriesResult] = await Promise.all([
     supabase
       .from("products")
