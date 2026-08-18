@@ -12,10 +12,10 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: { default: "Lúmina Feria — Hallazgos que iluminan", template: "%s | Lúmina Feria" },
-  description: "Perfumería, bienestar, hogar y accesorios seleccionados a precios especiales de feria.",
-  openGraph: { title: "Lúmina Feria", description: "Una selección bonita, cercana y cambiante para disfrutar y regalar.", type: "website", locale: "es_CO", images: [{ url: `${siteUrl}/og.png`, width: 1792, height: 909, alt: "Lúmina Feria — Hallazgos que iluminan lo cotidiano" }] },
-  twitter: { card: "summary_large_image", title: "Lúmina Feria", description: "Hallazgos que iluminan lo cotidiano.", images: [`${siteUrl}/og.png`] },
+  title: { default: "ESENCIAS VIP — Hallazgos que iluminan", template: "%s | ESENCIAS VIP" },
+  description: "Tienda multimarca con productos de Yanbal, Esika, L'Bel y Cyzone, Fuller, Samy Cosmetics y Natura a precios especiales.",
+  openGraph: { title: "ESENCIAS VIP", description: "Productos de Yanbal, Esika, L'Bel y Cyzone, Fuller, Samy Cosmetics y Natura en una selección cercana y especial.", type: "website", locale: "es_CO", images: [{ url: `${siteUrl}/og.png`, width: 1792, height: 909, alt: "ESENCIAS VIP — Hallazgos que iluminan lo cotidiano" }] },
+  twitter: { card: "summary_large_image", title: "ESENCIAS VIP", description: "Marcas como Yanbal, Esika, L'Bel y Cyzone, Fuller, Samy Cosmetics y Natura.", images: [`${siteUrl}/og.png`] },
   robots: { index: true, follow: true },
 };
 

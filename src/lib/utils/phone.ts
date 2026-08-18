@@ -1,4 +1,4 @@
-export function normalizeColombianPhone(phone: string): string {
+﻿export function normalizeColombianPhone(phone: string): string {
   const digits = phone.replace(/\D/g, "");
 
   if (digits.startsWith("57") && digits.length === 12) {
@@ -17,6 +17,6 @@ export function createWhatsAppUrl(
   firstName: string,
   orderNumber: string,
 ): string {
-  const message = `Hola ${firstName}, te escribimos respecto a tu pedido #${orderNumber} realizado en Lúmina Feria.`;
+  const message = `Hola ${firstName}, te escribimos respecto a tu pedido #${orderNumber} realizado en ESENCIAS VIP.`;
   return `https://wa.me/${normalizeColombianPhone(phone)}?text=${encodeURIComponent(message)}`;
 }
